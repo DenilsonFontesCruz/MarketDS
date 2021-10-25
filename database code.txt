@@ -1,0 +1,42 @@
+create database marketbd;
+
+use marketbd;
+
+create table Client (
+	id int not null primary key auto_increment,
+    cpf char(11)
+);
+
+create table Seller (
+	id int not null primary key auto_increment,
+    name varchar(45),
+    email varchar(50) unique not null,
+    password varchar(16)
+);
+
+create table Category (
+	id int not null primary key auto_increment,
+    name varchar(30)
+);
+
+create table Product (
+	id int not null primary key auto_increment,
+    name varchar(30),
+    price decimal,
+    expirationDate date,
+    qrCode int,
+    category int references Category (id)
+);
+
+create table Order_ (
+	id int not null primary key auto_increment,
+    payMethod int not null,
+    seller int references Seller (id),
+    client int references Client (id)
+);
+
+create table Product_Order (
+	quantity int,
+    product int references Product (id),
+    order_ int references Order_ (id)
+);
