@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderDTO {
 	
-	int id;
+	String id;
 	int payMethod;
-	SellerDTO seller;
-	ClientDTO client;
-	List<ProductQuantityDTO> products;
+	Integer seller;
+	Integer client;
 }

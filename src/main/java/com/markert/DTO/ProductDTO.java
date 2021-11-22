@@ -18,6 +18,15 @@ public class ProductDTO {
 	double price;
 	Date experitionDate;
 	int QRcode;
-	CategoryDTO category;
+	Integer category;
+	
+	public ProductDTO(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 	
 }

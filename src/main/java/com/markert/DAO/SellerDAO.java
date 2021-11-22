@@ -14,8 +14,8 @@ import com.markert.DTO.SellerDTO;
 
 public class SellerDAO {
 
-	 Connection connectDB;
-	 PreparedStatement pstm;
+	 static Connection connectDB;
+	 static PreparedStatement pstm;
 	
 	 public void register (SellerDTO dto) {
         
@@ -85,9 +85,25 @@ public class SellerDAO {
 	        
 		 }
 	 
-	 public SellerDTO findById (Integer id) {
+	 public void deleteAll() {
+		 connectDB = new ConnectorDAO().ConnectDB();
 	        
-	        connectDB = new ConnectorDAO().ConnectDB();
+	        try {
+	            String url = "DELETE FROM CATEGORY";
+	            
+	            pstm = connectDB.prepareStatement(url);
+	        
+	            pstm.execute();
+	            pstm.close();
+	        }
+	        catch(SQLException err) {
+	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
+	        }
+	 }
+	 
+	 public static SellerDTO findById (Integer id) {
+	        
+		 	connectDB = new ConnectorDAO().ConnectDB();
 	        
 	        try {
 	            String url = "SELECT * FROM SELLER WHERE ID = ?";
@@ -110,7 +126,7 @@ public class SellerDAO {
           
 	        }
 	        catch(SQLException err) {
-	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
+	            
 	            return new SellerDTO();
 	        }
 	        

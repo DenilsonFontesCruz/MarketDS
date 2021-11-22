@@ -12,4 +12,12 @@ public class ClientDTO {
 	int id;
 	String cpf;
 	
+	public ClientDTO(String cpf) {
+		this.cpf = cpf;
+	}
+	
+	@Override
+	public String toString() {
+		return cpf;
+	}
 }

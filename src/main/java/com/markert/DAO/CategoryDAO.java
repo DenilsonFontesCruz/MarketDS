@@ -13,8 +13,8 @@ import com.markert.DTO.CategoryDTO;
 
 public class CategoryDAO {
 
-	 Connection connectDB;
-	 PreparedStatement pstm;
+	 static Connection connectDB;
+	 static PreparedStatement pstm;
 	
 	 public void register (CategoryDTO dto) {
 	        
@@ -80,7 +80,23 @@ public class CategoryDAO {
 	        
 		 }
 	 
-	 public CategoryDTO findById (Integer id) {
+	 public void deleteAll() {
+		 connectDB = new ConnectorDAO().ConnectDB();
+	        
+	        try {
+	            String url = "DELETE FROM CATEGORY";
+	            
+	            pstm = connectDB.prepareStatement(url);
+	        
+	            pstm.execute();
+	            pstm.close();
+	        }
+	        catch(SQLException err) {
+	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
+	        }
+	 }
+	 
+	 public static CategoryDTO findById (Integer id) {
 	        
 	        connectDB = new ConnectorDAO().ConnectDB();
 	        
@@ -103,7 +119,6 @@ public class CategoryDAO {
                 
 	        }
 	        catch(SQLException err) {
-	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
 	            return new CategoryDTO();
 	        }
 	        

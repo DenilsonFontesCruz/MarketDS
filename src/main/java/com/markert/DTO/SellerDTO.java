@@ -14,4 +14,13 @@ public class SellerDTO {
 	String email;
 	String password;
 	
+	public SellerDTO(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+	
 }

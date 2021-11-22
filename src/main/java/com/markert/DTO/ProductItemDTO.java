@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductQuantityDTO {
+public class ProductItemDTO {
 	
 	int quantity;
-	ProductDTO product;
-	OrderDTO order;
+	Integer product;
+	String order;
 }

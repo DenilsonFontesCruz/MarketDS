@@ -5,7 +5,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -18,19 +22,23 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import com.markert.DAO.CategoryDAO;
+import com.markert.DAO.ProductDAO;
 import com.markert.DTO.CategoryDTO;
+import com.markert.DTO.ProductDTO;
+import javax.swing.JFormattedTextField;
 
 public class ProductADD extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField1;
 	private JTextField textField2;
-	private JTextField textField3;
+	private JFormattedTextField textField3;
 	private JButton addButton;
 	private JButton removeButton;
-	private JComboBox<String> comboBox;
+	private JComboBox<CategoryDTO> comboBox;
 	private List<CategoryDTO> categoryList = new ArrayList<CategoryDTO>();
 
 	/**
@@ -50,11 +58,9 @@ public class ProductADD extends JFrame {
 	}
 	
 	
-	/**
-	 * Create the frame.
-	 */
+
 	public ProductADD() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(110, 100, 450, 320);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -86,7 +92,7 @@ public class ProductADD extends JFrame {
 		
 		contentPane.add(label2);
 		
-		textField2 = new JTextField();
+		textField2 = new JTextField();	
 		textField2.setBounds(110, 100, 250, 30);
 		contentPane.add(textField2);
 		textField2.setColumns(10);
@@ -98,7 +104,12 @@ public class ProductADD extends JFrame {
 		
 		contentPane.add(label3);
 		
-		textField3 = new JTextField();
+		try {
+			textField3 = new JFormattedTextField(new MaskFormatter("##/##/####"));
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		textField3.setBounds(110, 140, 250, 30);
 		contentPane.add(textField3);
 		textField3.setColumns(10);
@@ -110,8 +121,10 @@ public class ProductADD extends JFrame {
 		
 		contentPane.add(label4);
 		
-		comboBox = new JComboBox<String>();
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecione"}));
+		comboBox = new JComboBox<CategoryDTO>();
+		comboBox.setModel(new DefaultComboBoxModel<CategoryDTO>(new CategoryDTO[] {
+				new CategoryDTO("Selecione")
+		}));
 		comboBox.setBounds(110, 180, 250, 30);
 		loadCombobox();
 		contentPane.add(comboBox);
@@ -119,7 +132,36 @@ public class ProductADD extends JFrame {
 		addButton = new JButton("ADCIONAR");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				ProductDAO dao = new ProductDAO();
+				ProductDTO dto = new ProductDTO();
+				DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
+				
+				dto.setName(textField1.getText());
+				if(!textField2.getText().isEmpty()) {
+					dto.setPrice(Double.parseDouble(textField2.getText()));
+				}
+				else {
+					dto.setPrice(0);
+				}
+				
+				try {
+					dto.setExperitionDate(dataFormat.parse(textField3.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+					Date date = new Date();
+					dto.setExperitionDate(date);
+				}
+				
+				CategoryDTO item = (CategoryDTO) comboBox.getSelectedItem();
+				
+				if(item.getId() != 0) {
+				dto.setCategory(item.getId());
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Selecione um item Correto");
+				}
+				
+				dao.register(dto);
 			}
 		});
 		addButton.setBounds(235, 220, 125, 26);
@@ -138,6 +180,10 @@ public class ProductADD extends JFrame {
 		removeButton.setBounds(110, 220, 125, 26);
 		contentPane.add(removeButton);
 		
+		JFormattedTextField formattedTextField = new JFormattedTextField();
+		formattedTextField.setBounds(52, 221, -32, 20);
+		contentPane.add(formattedTextField);
+		
 		
 	}
 	
@@ -147,7 +193,7 @@ public class ProductADD extends JFrame {
 		categoryList = dao.findAll();
 		
 		for(CategoryDTO i : categoryList) {
-		comboBox.addItem(i.getName());
+		comboBox.addItem(i);
 		}
 	}
 }

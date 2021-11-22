@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.markert.DTO.CategoryDTO;
 import com.markert.DTO.ProductDTO;
+import com.markert.DTO.ProductItemDTO;
 
 public class ProductDAO {
 
@@ -35,7 +36,7 @@ public class ProductDAO {
 	            Integer qrCode = (int)(Math.random() * (10000000 - 9000000+1)+10000000);
 	            
 	            pstm.setInt(4, qrCode);
-	            pstm.setInt(5, dto.getCategory().getId());
+	            pstm.setInt(5, dto.getCategory());
 	        
 	            pstm.execute();
 	            pstm.close();
@@ -58,7 +59,8 @@ public class ProductDAO {
 	            pstm.setString(1, dto.getName());
 	            pstm.setDouble(2, dto.getPrice());
 	            pstm.setDate(3, new java.sql.Date(dto.getExperitionDate().getTime()));
-	            pstm.setInt(4, dto.getId());
+	            pstm.setInt(4, dto.getCategory());
+	            pstm.setInt(5, dto.getId());
 	        
 	            pstm.execute();
 	            pstm.close();
@@ -90,6 +92,22 @@ public class ProductDAO {
 	        
 		 }
 	 
+	 public void deleteAll() {
+		 connectDB = new ConnectorDAO().ConnectDB();
+	        
+	        try {
+	            String url = "DELETE FROM CATEGORY";
+	            
+	            pstm = connectDB.prepareStatement(url);
+	        
+	            pstm.execute();
+	            pstm.close();
+	        }
+	        catch(SQLException err) {
+	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
+	        }
+	 }
+	 
 	 public ProductDTO findById (Integer id) {
 	        
 	        connectDB = new ConnectorDAO().ConnectDB();
@@ -111,11 +129,7 @@ public class ProductDAO {
        item.setPrice(queryList.getDouble("price"));
        item.setExperitionDate(queryList.getDate("expirationDate"));
        item.setQRcode(queryList.getInt("qrcode"));
-       
-       CategoryDAO dao = new CategoryDAO();
-       
-       CategoryDTO category = dao.findById(queryList.getInt("category"));
-       item.setCategory(category);
+       item.setCategory(queryList.getInt("category"));
 	        
        return item;
        
@@ -149,11 +163,8 @@ public class ProductDAO {
 	                item.setPrice(queryList.getDouble("price"));
 	                item.setExperitionDate(queryList.getDate("expirationDate"));
 	                item.setQRcode(queryList.getInt("qrcode"));
-	                
-	                CategoryDAO dao = new CategoryDAO();
-	                
-	                CategoryDTO category = dao.findById(queryList.getInt("category"));
-	                item.setCategory(category);
+	                item.setCategory(queryList.getInt("category"));
+	    	        
 	                
 	                list.add(item);
 	            }
@@ -164,6 +175,39 @@ public class ProductDAO {
 	        catch(SQLException err) {
 	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
 	            return new ArrayList<ProductDTO>();
+	        }
+	        
+	    }
+	 
+	 public List<ProductItemDTO> findAllItems () {
+	        
+		 	connectDB = new ConnectorDAO().ConnectDB();
+	        
+	        try {
+	            String url = "SELECT * FROM PRODUCT_ORDER";
+	            
+	            pstm = connectDB.prepareStatement(url);
+	            
+	            ResultSet queryList = pstm.executeQuery();
+	            
+	            List<ProductItemDTO> list = new ArrayList<ProductItemDTO>();
+	          
+	            while(queryList.next()) {
+	                ProductItemDTO item = new ProductItemDTO();
+	                
+	                item.setQuantity(queryList.getInt("quantity"));
+	                item.setProduct(queryList.getInt("product"));
+	    	        item.setOrder(queryList.getString("order_"));
+	                
+	                list.add(item);
+	            }
+	            
+	            return list;
+	            
+	        }
+	        catch(SQLException err) {
+	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
+	            return new ArrayList<ProductItemDTO>();
 	        }
 	        
 	    }
@@ -193,11 +237,8 @@ public class ProductDAO {
 	                item.setPrice(queryList.getDouble("price"));
 	                item.setExperitionDate(queryList.getDate("expirationDate"));
 	                item.setQRcode(queryList.getInt("qrcode"));
-	                
-	                CategoryDAO dao = new CategoryDAO();
-	                
-	                CategoryDTO category = dao.findById(queryList.getInt("category"));
-	                item.setCategory(category);
+	                item.setCategory(queryList.getInt("category"));
+	    	        
 	                
 	                list.add(item);
 	            }
