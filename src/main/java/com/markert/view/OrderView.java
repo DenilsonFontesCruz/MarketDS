@@ -153,6 +153,8 @@ public class OrderView extends JFrame {
 		listButton.setBackground(new Color(200,200,200));
 		listButton.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
 		contentPane.add(listButton);
+		
+		loadTable(null);
 	}
 
 	public void loadTable(String filter) {

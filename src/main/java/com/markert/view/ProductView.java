@@ -20,6 +20,7 @@ import com.markert.DAO.ProductDAO;
 import com.markert.DAO.SellerDAO;
 import com.markert.DTO.OrderDTO;
 import com.markert.DTO.ProductDTO;
+import com.markert.DTO.SellerDTO;
 import com.markert.Enums.PayMethods;
 
 import javax.swing.JTable;
@@ -29,7 +30,12 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -154,6 +160,8 @@ public class ProductView extends JFrame {
 		listButton.setBackground(new Color(200,200,200));
 		listButton.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
 		contentPane.add(listButton);
+		
+		loadTable(null);
 	}
 	
 	public void loadTable(String filter) {
@@ -214,7 +222,16 @@ public class ProductView extends JFrame {
 		
 		Integer selected = table.getSelectedRow();
 	
-		ProductEDIT.id = (Integer) table.getModel().getValueAt(selected, 0);
+		DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		ProductDTO dto = new ProductDTO();
+		
+		dto.setId((Integer) table.getModel().getValueAt(selected, 0));
+		dto.setName((String) table.getModel().getValueAt(selected, 1));
+		dto.setPrice((Double) table.getModel().getValueAt(selected, 3));
+		dto.setExperitionDate((Date) table.getModel().getValueAt(selected, 4));
+
+		ProductEDIT.proDto = dto;
 		JFrame edit = new ProductEDIT();
 		edit.setVisible(true);
 	}

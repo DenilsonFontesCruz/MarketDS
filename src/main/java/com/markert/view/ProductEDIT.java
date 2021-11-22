@@ -32,7 +32,7 @@ import javax.swing.JFormattedTextField;
 
 public class ProductEDIT extends JFrame {
 
-	public static Integer id;
+	public static ProductDTO proDto;
 	private JPanel contentPane;
 	private JTextField textField1;
 	private JTextField textField2;
@@ -162,7 +162,7 @@ public class ProductEDIT extends JFrame {
 					JOptionPane.showMessageDialog(null, "Selecione um item Correto");
 				}
 				
-				dto.setId(id);
+				dto.setId(proDto.getId());
 				
 				dao.update(dto);
 			}
@@ -187,7 +187,11 @@ public class ProductEDIT extends JFrame {
 		formattedTextField.setBounds(52, 221, -32, 20);
 		contentPane.add(formattedTextField);
 		
+		DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
 		
+		textField1.setText(proDto.getName());
+		textField2.setText(Double.toString(proDto.getPrice()));
+		textField3.setText(dataFormat.format(proDto.getExperitionDate()));
 	}
 	
 	public void loadCombobox() {

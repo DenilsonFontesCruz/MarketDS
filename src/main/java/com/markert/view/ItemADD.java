@@ -145,7 +145,7 @@ public class ItemADD extends JFrame {
 		removeButton.setBounds(100, 140, 125, 26);
 		contentPane.add(removeButton);
 		
-		String[] columnsName = {"PRODUTO", "QUANTIDADE"};
+		String[] columnsName = {"ID", "PRODUTO", "QUANTIDADE"};
 		String[][] data = {{null, null}};
 		table = new JTable();
 		table.setModel(new DefaultTableModel(data, columnsName));
@@ -158,11 +158,14 @@ public class ItemADD extends JFrame {
 		removeButton_1 = new JButton("DELETAR");
 		removeButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				delete();
+				loadTable();
 			}
 		});
 		removeButton_1.setBounds(10, 488, 414, 26);
 		contentPane.add(removeButton_1);
+		
+		loadTable();
 	}
 
 	public void loadCombobox() {
@@ -180,15 +183,18 @@ public class ItemADD extends JFrame {
             
            DefaultTableModel model = (DefaultTableModel) table.getModel();
             
-           ProductDAO dao = new ProductDAO();
+           OrderDAO dao = new OrderDAO();
+           
+           ProductDAO proDao = new ProductDAO();
             
-            List<ProductItemDTO> list = dao.findAllItems();
+            List<ProductItemDTO> list = dao.findAllItems(orderID);
             
             model.setNumRows(0);
             
             for(int i = 0; i < list.size(); i++) {
                 model.addRow(new Object[] {
-            		list.get(i).getProduct(),
+                	list.get(i).getId(),
+                	proDao.findById(list.get(i).getProduct()),
                     list.get(i).getQuantity()
                 });
             }
@@ -197,6 +203,15 @@ public class ItemADD extends JFrame {
         catch(Exception err) {
             JOptionPane.showMessageDialog(null, "Error message: " + err.getMessage());
         }
+	}
+	
+	public void delete() {
+		OrderDAO dao = new OrderDAO();
+
+		Integer selected = table.getSelectedRow();
+
+		dao.deleteItem((Integer) table.getModel().getValueAt(selected, 0));
+
 	}
 	
 	public void clearCamps() {

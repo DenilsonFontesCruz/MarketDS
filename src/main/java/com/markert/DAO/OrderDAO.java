@@ -91,6 +91,24 @@ public class OrderDAO {
 	        
 		 }
 	 
+	 public void deleteItem(Integer id) {
+		 connectDB = new ConnectorDAO().ConnectDB();
+	        
+	        try {
+	            String url = "DELETE FROM PRODUCT_ORDER WHERE ID = ?";
+	            
+	            pstm = connectDB.prepareStatement(url);
+	            
+	            pstm.setInt(1, id);
+	        
+	            pstm.execute();
+	            pstm.close();
+	        }
+	        catch(SQLException err) {
+	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
+	        }
+	 }
+	 
 	 public void deleteAll() {
 		 connectDB = new ConnectorDAO().ConnectDB();
 	        
@@ -170,6 +188,41 @@ public class OrderDAO {
 	        catch(SQLException err) {
 	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
 	            return new ArrayList<OrderDTO>();
+	        }
+	        
+	    }
+	 
+	 public List<ProductItemDTO> findAllItems (String id) {
+	        
+		 	connectDB = new ConnectorDAO().ConnectDB();
+	        
+	        try {
+	            String url = "SELECT p.* FROM PRODUCT_ORDER p WHERE p.ORDER_ = ?";
+	            
+	            pstm = connectDB.prepareStatement(url);
+	            
+	            pstm.setString(1, id);
+	            
+	            ResultSet queryList = pstm.executeQuery();
+	            
+	            List<ProductItemDTO> list = new ArrayList<ProductItemDTO>();
+	          
+	            while(queryList.next()) {
+	                ProductItemDTO item = new ProductItemDTO();
+	                
+	                item.setId(queryList.getInt("id"));
+	                item.setQuantity(queryList.getInt("quantity"));
+	                item.setProduct(queryList.getInt("product"));
+	    	        item.setOrder(queryList.getString("order_"));
+	                
+	                list.add(item);
+	            }
+	            
+	            return list;
+	            
+	        }
+	        catch(SQLException err) {
+	            return new ArrayList<ProductItemDTO>();
 	        }
 	        
 	    }

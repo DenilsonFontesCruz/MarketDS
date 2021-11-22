@@ -160,10 +160,10 @@ public class OrderADD extends JFrame {
 				
 				String uuid = dao.register(dto);
 				
-				JFrame adicionar = new ItemADD();
-				adicionar.setVisible(true);
-				
 				ItemADD.orderID = uuid;
+				
+				JFrame adicionar = new ItemADD();
+				adicionar.setVisible(true);	
 			}
 		});
 		addButton.setBounds(235, 180, 125, 26);

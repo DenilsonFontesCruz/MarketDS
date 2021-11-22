@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import com.markert.DAO.CategoryDAO;
 import com.markert.DAO.ProductDAO;
 import com.markert.DAO.SellerDAO;
+import com.markert.DTO.CategoryDTO;
 import com.markert.DTO.ProductDTO;
 import com.markert.DTO.SellerDTO;
 
@@ -151,6 +152,8 @@ public class SellerView extends JFrame {
 		listButton.setBackground(new Color(200,200,200));
 		listButton.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
 		contentPane.add(listButton);
+		
+		loadTable(null);
 	}
 	
 	public void loadTable(String filter) {
@@ -208,7 +211,13 @@ public class SellerView extends JFrame {
 		
 		Integer selected = table.getSelectedRow();
 	
-		SellerEDIT.id = (Integer) table.getModel().getValueAt(selected, 0);
+		SellerDTO dto = new SellerDTO();
+		
+		dto.setId((Integer) table.getModel().getValueAt(selected, 0));
+		dto.setName((String) table.getModel().getValueAt(selected, 1));
+		dto.setEmail((String) table.getModel().getValueAt(selected, 2));
+		
+		SellerEDIT.selDto = dto;
 		JFrame edit = new SellerEDIT();
 		edit.setVisible(true);
 	}

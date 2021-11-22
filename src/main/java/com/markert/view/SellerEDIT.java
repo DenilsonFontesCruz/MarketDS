@@ -19,7 +19,7 @@ import com.markert.DTO.SellerDTO;
 
 public class SellerEDIT extends JFrame {
 
-	public static Integer id;
+	public static SellerDTO selDto;
 	private JPanel contentPane;
 	private JTextField textField1;
 	private JTextField textField2;
@@ -106,7 +106,7 @@ public class SellerEDIT extends JFrame {
 				dto.setEmail(textField2.getText());
 				dto.setPassword(textField3.getText());
 				
-				dto.setId(id);
+				dto.setId(selDto.getId());
 				
 				dao.update(dto);
 			}
@@ -126,6 +126,9 @@ public class SellerEDIT extends JFrame {
 		});
 		removeButton.setBounds(100, 180, 125, 26);
 		contentPane.add(removeButton);
+		
+		textField1.setText(selDto.getName());
+		textField2.setText(selDto.getEmail());
 	}
 
 }

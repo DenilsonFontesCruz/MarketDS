@@ -151,6 +151,8 @@ public class ClientView extends JFrame {
 		listButton.setBackground(new Color(200,200,200));
 		listButton.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
 		contentPane.add(listButton);
+		
+		loadTable(null);
 	}
 	
 	public void loadTable(String filter) {
@@ -206,7 +208,12 @@ public class ClientView extends JFrame {
 		
 		Integer selected = table.getSelectedRow();
 	
-		ClientEDIT.id = (Integer) table.getModel().getValueAt(selected, 0);
+		ClientDTO dto = new ClientDTO();
+		
+		dto.setId((Integer) table.getModel().getValueAt(selected, 0));
+		dto.setCpf((String) table.getModel().getValueAt(selected, 1));
+		
+		ClientEDIT.cliDto = dto;
 		JFrame edit = new ClientEDIT();
 		edit.setVisible(true);
 	}

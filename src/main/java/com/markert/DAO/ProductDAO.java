@@ -179,38 +179,7 @@ public class ProductDAO {
 	        
 	    }
 	 
-	 public List<ProductItemDTO> findAllItems () {
-	        
-		 	connectDB = new ConnectorDAO().ConnectDB();
-	        
-	        try {
-	            String url = "SELECT * FROM PRODUCT_ORDER";
-	            
-	            pstm = connectDB.prepareStatement(url);
-	            
-	            ResultSet queryList = pstm.executeQuery();
-	            
-	            List<ProductItemDTO> list = new ArrayList<ProductItemDTO>();
-	          
-	            while(queryList.next()) {
-	                ProductItemDTO item = new ProductItemDTO();
-	                
-	                item.setQuantity(queryList.getInt("quantity"));
-	                item.setProduct(queryList.getInt("product"));
-	    	        item.setOrder(queryList.getString("order_"));
-	                
-	                list.add(item);
-	            }
-	            
-	            return list;
-	            
-	        }
-	        catch(SQLException err) {
-	            JOptionPane.showMessageDialog(null, "Error Message: " + err.getMessage());
-	            return new ArrayList<ProductItemDTO>();
-	        }
-	        
-	    }
+	 
 	 
 	 public List<ProductDTO> findFilterList(String filter) {
 	        

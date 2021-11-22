@@ -15,11 +15,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.markert.DAO.ClientDAO;
+import com.markert.DTO.CategoryDTO;
 import com.markert.DTO.ClientDTO;
 
 public class ClientEDIT extends JFrame {
 
-	public static Integer id;
+	public static ClientDTO cliDto;
 	private JPanel contentPane;
 	private JTextField textField1;
 	private JButton addButton;
@@ -78,7 +79,8 @@ public class ClientEDIT extends JFrame {
 				
 				dto.setCpf(textField1.getText());
 				
-				dto.setId(id);
+				
+				dto.setId(cliDto.getId());
 				
 				dao.update(dto);
 			}
@@ -98,6 +100,8 @@ public class ClientEDIT extends JFrame {
 		});
 		removeButton.setBounds(100, 100, 125, 26);
 		contentPane.add(removeButton);
+		
+		textField1.setText(cliDto.getCpf());
 	}
 
 }

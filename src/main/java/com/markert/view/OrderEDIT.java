@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import com.markert.DAO.CategoryDAO;
@@ -35,6 +36,7 @@ import com.markert.DTO.CategoryDTO;
 import com.markert.DTO.ClientDTO;
 import com.markert.DTO.OrderDTO;
 import com.markert.DTO.ProductDTO;
+import com.markert.DTO.ProductItemDTO;
 import com.markert.DTO.SellerDTO;
 import com.markert.Enums.PayMethods;
 
@@ -43,6 +45,7 @@ import javax.swing.JFormattedTextField;
 public class OrderEDIT extends JFrame {
 
 	public static String id;
+	private JTable table;
 	private JPanel contentPane;
 	private JTextField textField1;
 	private JTextField textField2;
@@ -54,6 +57,7 @@ public class OrderEDIT extends JFrame {
 	private JComboBox<PayMethods> comboBox3;
 	private List<SellerDTO> sellerList = new ArrayList<SellerDTO>();
 	private List<ClientDTO> clientList = new ArrayList<ClientDTO>();
+	private JButton addButton_1;
 	
 	/**
 	 * Launch the application.
@@ -78,7 +82,7 @@ public class OrderEDIT extends JFrame {
 	 */
 	public OrderEDIT() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(110, 100, 453, 320);
+		setBounds(110, 100, 916, 320);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -185,9 +189,29 @@ public class OrderEDIT extends JFrame {
 		formattedTextField.setBounds(52, 221, -32, 20);
 		contentPane.add(formattedTextField);
 		
-		String[] columnsName = {"NOME", "QUANTIDADE"};
+		String[] columnsName = {"PRODUTO", "QUANTIDADE"};
 		String[][] data = {{null, null}};
+		table = new JTable();
+		table.setModel(new DefaultTableModel(data, columnsName));
 		contentPane.setLayout(null);
+		JScrollPane tablePane = new JScrollPane(table);
+		tablePane.setBounds(444, 60, 423, 146);
+		
+		contentPane.add(tablePane);
+		
+		addButton_1 = new JButton("EDITAR ITEMS");
+		addButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ItemADD.orderID = id;
+				
+				JFrame adicionar = new ItemADD();
+				adicionar.setVisible(true);
+			}
+		});
+		addButton_1.setBounds(444, 217, 423, 26);
+		contentPane.add(addButton_1);
+		
+		loadTable();
 		
 	}
 	
@@ -212,6 +236,33 @@ public class OrderEDIT extends JFrame {
 		comboBox2.addItem(i);
 		}
 		
+	}
+	
+	public void loadTable() {
+		
+		try {
+            
+	           DefaultTableModel model = (DefaultTableModel) table.getModel();
+	            
+	           OrderDAO dao = new OrderDAO();
+	            
+	           ProductDAO proDao = new ProductDAO();
+	           
+	            List<ProductItemDTO> list = dao.findAllItems(id);
+	            
+	            model.setNumRows(0);
+	            
+	            for(int i = 0; i < list.size(); i++) {
+	                model.addRow(new Object[] {
+	                	proDao.findById(list.get(i).getProduct()).getName(),
+	                    list.get(i).getQuantity()
+	                });
+	            }
+	          
+	        }
+	        catch(Exception err) {
+	            JOptionPane.showMessageDialog(null, "Error message: " + err.getMessage());
+	        }
 	}
 	
 	

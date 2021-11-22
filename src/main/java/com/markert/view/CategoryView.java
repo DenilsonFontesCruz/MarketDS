@@ -23,6 +23,7 @@ import com.markert.DAO.CategoryDAO;
 import com.markert.DAO.ClientDAO;
 import com.markert.DAO.ProductDAO;
 import com.markert.DTO.CategoryDTO;
+import com.markert.DTO.ClientDTO;
 import com.markert.DTO.ProductItemDTO;
 
 public class CategoryView extends JFrame {
@@ -145,6 +146,8 @@ public class CategoryView extends JFrame {
 		listButton.setBackground(new Color(200,200,200));
 		listButton.setFont(new Font("Segoe UI Light", Font.BOLD, 14));
 		contentPane.add(listButton);
+		
+		loadTable(null);
 	}
 	
 	public void loadTable(String filter) {
@@ -183,7 +186,12 @@ public class CategoryView extends JFrame {
 		
 		Integer selected = table.getSelectedRow();
 	
-		CategoryEDIT.id = (Integer) table.getModel().getValueAt(selected, 0);
+		CategoryDTO dto = new CategoryDTO();
+		
+		dto.setId((Integer) table.getModel().getValueAt(selected, 0));
+		dto.setName((String) table.getModel().getValueAt(selected, 1));
+		
+		CategoryEDIT.catDto = dto;
 		JFrame edit = new CategoryEDIT();
 		edit.setVisible(true);
 	}

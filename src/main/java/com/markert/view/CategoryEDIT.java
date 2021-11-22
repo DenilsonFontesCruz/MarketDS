@@ -19,7 +19,7 @@ import com.markert.DTO.CategoryDTO;
 
 public class CategoryEDIT extends JFrame {
 
-	public static Integer id;
+	public static CategoryDTO catDto;
 	private JPanel contentPane;
 	private JTextField textField1;
 	private JButton addButton;
@@ -78,7 +78,7 @@ public class CategoryEDIT extends JFrame {
 				
 				dto.setName(textField1.getText());
 				
-				dto.setId(id);
+				dto.setId(catDto.getId());
 				
 				dao.update(dto);
 			}
@@ -98,6 +98,8 @@ public class CategoryEDIT extends JFrame {
 		});
 		removeButton.setBounds(100, 100, 125, 26);
 		contentPane.add(removeButton);
+		
+		textField1.setText(catDto.getName());
 	}
 
 }
