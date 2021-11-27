@@ -96,7 +96,7 @@ public class ProductDAO {
 		 connectDB = new ConnectorDAO().ConnectDB();
 	        
 	        try {
-	            String url = "DELETE FROM CATEGORY";
+	            String url = "DELETE FROM PRODUCT";
 	            
 	            pstm = connectDB.prepareStatement(url);
 	        

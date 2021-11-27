@@ -89,7 +89,7 @@ public class SellerDAO {
 		 connectDB = new ConnectorDAO().ConnectDB();
 	        
 	        try {
-	            String url = "DELETE FROM CATEGORY";
+	            String url = "DELETE FROM SELLER";
 	            
 	            pstm = connectDB.prepareStatement(url);
 	        

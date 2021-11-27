@@ -134,9 +134,7 @@ public class CategoryView extends JFrame {
 		JButton listButton = new JButton("PESQUISAR");
 		listButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-			textField.setText("");
-				
+	
 			loadTable(textField.getText());
 				
 			}

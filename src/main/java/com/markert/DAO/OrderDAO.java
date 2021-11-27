@@ -113,7 +113,7 @@ public class OrderDAO {
 		 connectDB = new ConnectorDAO().ConnectDB();
 	        
 	        try {
-	            String url = "DELETE FROM CATEGORY";
+	            String url = "DELETE FROM ORDER_";
 	            
 	            pstm = connectDB.prepareStatement(url);
 	        

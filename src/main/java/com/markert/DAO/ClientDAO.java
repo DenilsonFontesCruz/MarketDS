@@ -84,7 +84,7 @@ public class ClientDAO {
 		 connectDB = new ConnectorDAO().ConnectDB();
 	        
 	        try {
-	            String url = "DELETE FROM CATEGORY";
+	            String url = "DELETE FROM CLIENT";
 	            
 	            pstm = connectDB.prepareStatement(url);
 	        
